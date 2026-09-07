@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Sinaa Partners — brand token layer
+   Derived from the Sinaa Partners mark (navy / gold / slate) and the
+   supplied five-swatch palette. Every pairing used for text in site.css is
+   verified against WCAG 2.1 AA (4.5:1 body, 3:1 large text & UI boundaries).
+   Ratios recorded inline are measured, not estimated.
+   ========================================================================== */
+
+:root {
+  /* --- Core palette ----------------------------------------------------- */
+  --ink:        #04101F; /* deepest navy — hero grounds, footer            */
+  --navy:       #0A1B2E; /* primary navy — logo wordmark, headings         */
+  --navy-2:     #12293F; /* raised surface on dark                         */
+  --gold:       #A9761D; /* brand gold — the ring. Fills, rules, borders.  */
+  --gold-text:  #8C5F14; /* gold for TEXT on light — 5.58:1 on white       */
+  --gold-lt:    #C9932F; /* gold for text on navy — 6.37:1                 */
+  --slate:      #6D85AC; /* logo slate — fills and rules only              */
+  --slate-text: #4A628A; /* slate for text on light — 6.17:1               */
+  --cream:      #F2E6D2; /* warm section ground                            */
+  --cream-2:    #FAF4EA; /* subtle warm ground                             */
+  --white:      #FFFFFF;
+
+  /* --- Semantic surfaces ------------------------------------------------ */
+  --surface:            var(--white);
+  --surface-warm:       var(--cream-2);
+  --surface-warm-deep:  var(--cream);
+  --surface-dark:       var(--ink);
+  --surface-dark-raised:var(--navy-2);
+
+  /* --- Semantic text ---------------------------------------------------- */
+  --text-strong:      var(--navy);   /* 17.4:1 on white                    */
+  --text-body:        #33445C;       /*  9.9:1 on white, 8.0:1 on cream    */
+  --text-accent:      var(--gold-text);
+  --text-on-dark:     var(--white);  /* 19.1:1 on ink                      */
+  --text-muted-dark:  #B9C6D8;       /* 11.0:1 on ink                      */
+  --text-accent-dark: var(--gold-lt);/*  6.4:1 on navy                     */
+
+  /* --- Lines & edges ---------------------------------------------------- */
+  --rule:        #E2D9C9;            /* warm hairline on light             */
+  --rule-strong: #C9BCA6;
+  --rule-dark:   #24405C;            /* hairline on navy                   */
+  --edge-gold:   var(--gold);        /* 3.97:1 on white — meets 1.4.11     */
+  --focus:       #C9932F;
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-display: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Fluid scale. Body never drops below 16px; small text never below 14px. */
+  --t-hero:   clamp(2.6rem, 1.4rem + 4.2vw, 5rem);
+  --t-h1:     clamp(2.1rem, 1.4rem + 2.6vw, 3.5rem);
+  --t-h2:     clamp(1.7rem, 1.25rem + 1.7vw, 2.6rem);
+  --t-h3:     clamp(1.25rem, 1.1rem + 0.6vw, 1.55rem);
+  --t-lead:   clamp(1.06rem, 1rem + 0.42vw, 1.32rem);
+  --t-body:   1rem;
+  --t-small:  0.9375rem;
+  --t-eyebrow:0.8125rem;
+
+  /* --- Space ------------------------------------------------------------ */
+  --s-1: 0.25rem; --s-2: 0.5rem;  --s-3: 0.75rem; --s-4: 1rem;
+  --s-5: 1.5rem;  --s-6: 2rem;    --s-7: 3rem;    --s-8: 4rem;
+  --s-9: 6rem;    --s-10: 8rem;
+  --section-y: clamp(4rem, 2rem + 7vw, 7.5rem);
+  --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+  --measure: 68ch;
+  --shell: 1200px;
+
+  /* --- Form ------------------------------------------------------------- */
+  --r-sm: 2px; --r-md: 4px; --r-lg: 8px;
+  --shadow-1: 0 1px 2px rgba(4,16,31,.06), 0 8px 24px -12px rgba(4,16,31,.18);
+  --shadow-2: 0 2px 4px rgba(4,16,31,.07), 0 24px 48px -24px rgba(4,16,31,.28);
+}
