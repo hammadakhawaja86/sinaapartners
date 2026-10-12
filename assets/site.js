@@ -65,11 +65,115 @@
     });
   }
 
-  /* --- Scroll reveal ------------------------------------------------------ */
-  var nodes = document.querySelectorAll('.reveal');
-  if (!window.IntersectionObserver || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    Array.prototype.forEach.call(nodes, function (n) { n.classList.add('is-in'); });
-  } else {
+    /* --- Page-load intro ----------------------------------------------------
+     The cover is already in the markup, so it hides the page from the first
+     paint. This clones the real header lockup into it -- never a redrawn or
+     stand-in logo -- flies it to the centre, waits for the fonts, then parts
+     the bands while the clone glides back onto the header copy (a FLIP move:
+     it is positioned at the measured box, so `transform: none` is home).
+
+     Anything that can leave the page covered is guarded: no JS at all is
+     handled by the <noscript> rule, a throw is caught, and a failsafe timer
+     reveals regardless. */
+    var introEl = document.querySelector('[data-intro]');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  /* The head script has already ruled on this one: it plays on arrival and on
+     a reload, not while moving between pages. */
+  var skipped = document.documentElement.classList.contains('intro-skip');
+  var introPending = !!introEl && !reduce.matches && !skipped;
+
+  function afterIntro(fn) {
+    if (!introPending) { fn(); return; }
+    document.addEventListener('sinaa:intro-done', fn, { once: true });
+  }
+
+    if (introEl && (reduce.matches || skipped)) {
+    introEl.parentNode.removeChild(introEl);
+  } else if (introEl) {
+    runIntro(introEl);
+  }
+
+  function runIntro(root) {
+    var doc = document.documentElement;
+    var box = root.querySelector('[data-intro-logo]');
+    var real = document.querySelector('.site-header .logo__lockup');
+    var revealed = false, failsafe;
+
+    function finish() {
+      doc.classList.remove('intro-active');
+      root.classList.add('is-done');
+      introPending = false;
+      document.dispatchEvent(new CustomEvent('sinaa:intro-done'));
+    }
+
+    if (!box || !real) { finish(); return; }
+
+    try {
+      doc.classList.add('intro-active');
+
+      /* A clone, so the intro cannot drift from the header lockup. The ids
+         inside carry the header's suffix, so rewrite them -- two elements
+         sharing an id would send the clone's mask and clip at the header's
+         definitions. */
+      var clone = real.cloneNode(true);
+      clone.removeAttribute('role');
+      clone.removeAttribute('aria-label');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.innerHTML = clone.innerHTML.replace(/_hdr/g, '_intro');
+      box.appendChild(clone);
+
+      var SCALE = 1.55;
+      function place() {
+        if (revealed) return;
+        var r = real.getBoundingClientRect();
+        if (!r.width) return;
+        box.style.left = r.left + 'px';
+        box.style.top = r.top + 'px';
+        box.style.transform =
+          'translate(' + ((window.innerWidth - r.width * SCALE) / 2 - r.left) + 'px,' +
+          ((window.innerHeight - r.height * SCALE) / 2 - r.top) + 'px) scale(' + SCALE + ')';
+      }
+      place();
+      box.classList.add('is-waiting');
+      window.addEventListener('resize', place);
+
+      function reveal() {
+        if (revealed) return;
+        revealed = true;
+        clearTimeout(failsafe);
+        window.removeEventListener('resize', place);
+        box.classList.remove('is-waiting');
+        root.classList.add('is-out');
+        /* Hand-off: the real lockup comes back while the clone is still
+           travelling, so the swap happens under the moving element. */
+        setTimeout(function () { doc.classList.remove('intro-active'); }, 820);
+        setTimeout(finish, 1120);
+      }
+
+      /* Never trap the user. */
+      document.addEventListener('keydown', reveal, { once: true });
+      document.addEventListener('pointerdown', reveal, { once: true });
+      failsafe = setTimeout(reveal, 4000);
+
+      var fonts = (document.fonts && document.fonts.ready) || Promise.resolve();
+      fonts.then(function () {
+        place();
+        setTimeout(reveal, 1150);
+      })['catch'](function () { reveal(); });
+    } catch (e) {
+      finish();
+    }
+  }
+
+  /* --- Scroll reveal ------------------------------------------------------
+     Held until the intro finishes, so entrance animations are not spent
+     playing behind the cover. */
+  function initReveal() {
+    var nodes = document.querySelectorAll('.reveal');
+    if (!window.IntersectionObserver || reduce.matches) {
+      Array.prototype.forEach.call(nodes, function (n) { n.classList.add('is-in'); });
+      return;
+    }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
@@ -77,6 +181,7 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     Array.prototype.forEach.call(nodes, function (n) { io.observe(n); });
   }
+  afterIntro(initReveal);
 
   /* --- Growth Readiness Scan --------------------------------------------- */
   var scan = document.querySelector('[data-scan]');
@@ -92,7 +197,7 @@
         out.hidden = false;
         out.querySelector('[data-scan-headline]').textContent = 'Answer every question to see your read-out.';
         out.querySelector('[data-scan-body]').textContent = '';
-        out.querySelector('[data-scan-meter]').style.width = '0%';
+        out.querySelector('[data-scan-meter]').style.transform = 'scaleX(0)';
         out.querySelector('[data-scan-band]').textContent = '';
         out.focus();
         return;

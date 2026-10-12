@@ -631,6 +631,62 @@ legend { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 60
    back, as in .footer__nav and .facts. */
 .footer__bar a { display: inline-block; padding-block: 4px; margin-block: -4px; }
 
+/* --- Page-load intro ------------------------------------------------------ */
+/* Two bands part to uncover the page while the real header lockup flies home.
+   Everything animated here is transform or opacity, so it composites. */
+.intro { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+/* Set by the inline head script when this is internal navigation rather than
+   an arrival or a reload, so the cover never paints at all. */
+.intro-skip .intro { display: none; }
+/* 50.5%, not 50%: a half-pixel viewport height would otherwise leave a hairline
+   of page showing down the middle of the cover. */
+.intro__band {
+  position: absolute; left: 0; right: 0; height: 50.5%;
+  background: var(--surface); will-change: transform;
+}
+.intro__band--top { top: 0; }
+.intro__band--bottom { bottom: 0; }
+/* Positioned from the real lockup's measured box, so `transform: none` at the
+   end lands it exactly on the header copy. */
+.intro__logo {
+  position: absolute; top: 0; left: 0;
+  transform-origin: top left; will-change: transform;
+}
+.intro__logo .logo__lockup { display: block; }
+
+/* The loading beat. The reference pulses three bars on scaleY; our lockup has
+   no bars, and squashing letterforms would deform the wordmark, so the same
+   staggered rhythm rides on the five SINAA letters' opacity instead. The
+   letters are the svg's first five paths, authored right-to-left, so the
+   delays count down to read S-I-N-A-A. No separate spinner. */
+@keyframes intro-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.28; } }
+.intro__logo.is-waiting svg > path:nth-of-type(-n+5) {
+  animation: intro-pulse 1.05s ease-in-out infinite;
+}
+.intro__logo.is-waiting svg > path:nth-of-type(5) { animation-delay: 0s; }
+.intro__logo.is-waiting svg > path:nth-of-type(4) { animation-delay: .09s; }
+.intro__logo.is-waiting svg > path:nth-of-type(3) { animation-delay: .18s; }
+.intro__logo.is-waiting svg > path:nth-of-type(2) { animation-delay: .27s; }
+.intro__logo.is-waiting svg > path:nth-of-type(1) { animation-delay: .36s; }
+
+/* The reveal. The bands leave and the lockup glides home on the same curve. */
+.intro.is-out .intro__band, .intro.is-out .intro__logo {
+  transition: transform 1s cubic-bezier(.76, 0, .24, 1);
+}
+.intro.is-out .intro__band--top { transform: translateY(-100%); }
+.intro.is-out .intro__band--bottom { transform: translateY(100%); }
+.intro.is-out .intro__logo { transform: none; }
+.intro.is-done { display: none; }
+
+/* The real lockup is hidden only while the flying copy stands in for it. */
+.intro-active .site-header .logo__lockup { opacity: 0; }
+
+/* Reduced motion: no intro at all, and the cover never exists. */
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+  .intro-active .site-header .logo__lockup { opacity: 1; }
+}
+
 /* --- Reveal --------------------------------------------------------------- */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.is-in { opacity: 1; transform: none; }

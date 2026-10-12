@@ -13,8 +13,35 @@
 <link rel="preload" href="assets/fonts/aptos-display-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/brand.css">
 <link rel="stylesheet" href="assets/site.css">
+<!-- Decide about the load intro before the first paint. site.js is deferred,
+     so leaving this to it would flash the cover on every internal click while
+     the script loads. Plays on arrival and on a real reload; stays out of the
+     way once you are moving around the site. -->
+<script>
+(function () {
+  try {
+    var e = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var type = e ? e.type
+      : (performance.navigation && performance.navigation.type === 1 ? 'reload' : 'navigate');
+    var seen = sessionStorage.getItem('sinaa:intro') === '1';
+    sessionStorage.setItem('sinaa:intro', '1');
+    if (seen && type !== 'reload') document.documentElement.className += ' intro-skip';
+  } catch (err) { /* no sessionStorage (private mode): fall back to playing it */ }
+})();
+</script>
 </head>
 <body>
+<!-- Page-load intro. The bands are in the markup so they cover from the first
+     paint, before site.js runs; the logo inside is cloned from the real header
+     lockup at runtime, so it cannot drift from it. aria-hidden: the header
+     logo stays the accessible element. Without JS the <noscript> rule below
+     removes the cover entirely, so the page is never trapped behind it. -->
+<div class="intro" data-intro aria-hidden="true">
+  <div class="intro__band intro__band--top"></div>
+  <div class="intro__band intro__band--bottom"></div>
+  <div class="intro__logo" data-intro-logo></div>
+</div>
+<noscript><style>.intro{display:none}</style></noscript>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="shell site-header__inner">
