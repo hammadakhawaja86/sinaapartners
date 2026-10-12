@@ -1,0 +1,14 @@
+.DS_Store
+
+# Licensed brand typeface — NOT version controlled.
+# The Microsoft Aptos EULA states: "No Distribution Rights. This agreement does
+# not grant you a license to distribute nor sublicense all or part of the
+# software to any third party." This repository is public, so committing the
+# WOFF2 files here would distribute them to anyone who clones it.
+#
+# The files stay on disk and the site still works: every @font-face in
+# assets/brand.css lists local() FIRST, so anyone with Microsoft Office renders
+# Aptos from their own licensed copy. Everyone else gets the Segoe UI /
+# system-ui fallback, which is the intended behaviour until the client
+# confirms a web licence.
+assets/fonts/

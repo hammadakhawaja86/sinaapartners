@@ -1,4 +1,45 @@
 /* ==========================================================================
+   Aptos — the brand typeface, supplied by the client.
+
+   LICENCE WARNING. The Microsoft Aptos EULA shipped with these files states:
+   "No Distribution Rights. This agreement does not grant you a license to
+   distribute nor sublicense all or part of the software to any third party."
+   Serving a font file from a public site distributes it to every visitor.
+   Each @font-face therefore lists local() FIRST, so anyone with Microsoft
+   Office installed renders from their own licensed copy and never downloads
+   ours. The url() fallback is here so the prototype looks right on machines
+   without Office — clear it with the client, or obtain a web licence, before
+   this goes to a public domain.
+
+   Files are subset to Latin plus the punctuation the copy uses: 1.3MB of TTF
+   down to 121KB of WOFF2.
+   ========================================================================== */
+@font-face {
+  font-family: "Aptos Display"; font-style: normal; font-weight: 400; font-display: swap;
+  src: local("Aptos Display"), url("fonts/aptos-display-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aptos Display"; font-style: normal; font-weight: 700; font-display: swap;
+  src: local("Aptos Display Bold"), url("fonts/aptos-display-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aptos"; font-style: normal; font-weight: 400; font-display: swap;
+  src: local("Aptos"), url("fonts/aptos-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aptos"; font-style: italic; font-weight: 400; font-display: swap;
+  src: local("Aptos Italic"), url("fonts/aptos-400i.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aptos"; font-style: normal; font-weight: 600; font-display: swap;
+  src: local("Aptos SemiBold"), url("fonts/aptos-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Aptos"; font-style: normal; font-weight: 700; font-display: swap;
+  src: local("Aptos Bold"), url("fonts/aptos-700.woff2") format("woff2");
+}
+
+/* ==========================================================================
    Sinaa Partners — brand token layer
    Derived from the Sinaa Partners mark (navy / gold / slate) and the
    supplied five-swatch palette. Every pairing used for text in site.css is
@@ -40,11 +81,18 @@
   --rule-strong: #C9BCA6;
   --rule-dark:   #24405C;            /* hairline on navy                   */
   --edge-gold:   var(--gold);        /* 3.97:1 on white — meets 1.4.11     */
-  --focus:       #C9932F;
+  /* The focus ring is a non-text indicator: SC 1.4.11 wants 3:1 against
+     whatever sits behind it. --gold-lt is tuned for navy and measures only
+     2.73:1 on white and 2.49:1 on cream, so light grounds take --gold
+     (3.97:1 on white, 3.21:1 on cream) and .on-dark restores --gold-lt. */
+  --focus:       var(--gold);
 
   /* --- Type ------------------------------------------------------------- */
-  --font-display: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* Aptos Display is the cut Microsoft designed for headline sizes; Aptos is
+     the text cut. Aptos has no 500 weight, so 500 resolves to 400 — the type
+     scale uses 600/700 for emphasis instead. */
+  --font-display: "Aptos Display", "Aptos", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Aptos", "Segoe UI", system-ui, -apple-system, sans-serif;
 
   /* Fluid scale. Body never drops below 16px; small text never below 14px. */
   --t-hero:   clamp(2.6rem, 1.4rem + 4.2vw, 5rem);

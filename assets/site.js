@@ -2,23 +2,54 @@
 (function () {
   'use strict';
 
-  /* --- Solutions mega menu (button + disclosure, keyboard operable) ------- */
+  /* --- Solutions mega menu ------------------------------------------------
+     One control. Click follows the link to solutions.html; hover or keyboard
+     focus opens the panel. Pointer-driven open is gated behind a real mouse,
+     so a tap on a touch device just navigates rather than opening a panel the
+     user cannot dismiss. */
+  var wrap = document.querySelector('[data-mega]');
   var trigger = document.querySelector('[data-mega-trigger]');
   var panel = document.querySelector('[data-mega-panel]');
-  if (trigger && panel) {
-    var close = function () { trigger.setAttribute('aria-expanded', 'false'); panel.hidden = true; };
-    var open = function () { trigger.setAttribute('aria-expanded', 'true'); panel.hidden = false; };
-    trigger.addEventListener('click', function () {
-      trigger.getAttribute('aria-expanded') === 'true' ? close() : open();
+  if (wrap && trigger && panel) {
+    var closeTimer = null;
+    var cancelClose = function () { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } };
+    var open = function () {
+      cancelClose();
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+    };
+    var close = function () {
+      cancelClose();
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+    };
+    // A short grace period: the pointer travels diagonally from the link to
+    // the panel, and briefly leaves the wrapper on the way.
+    var closeSoon = function () { cancelClose(); closeTimer = setTimeout(close, 160); };
+
+    // Escape has to return focus to the link, but that refocus fires focusin
+    // again and would reopen what the user just dismissed. This latch keeps it
+    // shut until they move away or hover back in.
+    var dismissed = false;
+
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (fine.matches) {
+      wrap.addEventListener('mouseenter', function () { dismissed = false; open(); });
+      wrap.addEventListener('mouseleave', closeSoon);
+    }
+
+    // Keyboard users never hover, so focus has to open it too.
+    wrap.addEventListener('focusin', function () { if (!dismissed) open(); });
+    wrap.addEventListener('focusout', function (e) {
+      if (!wrap.contains(e.relatedTarget)) { dismissed = false; close(); }
     });
+
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') { close(); trigger.focus(); }
-    });
-    document.addEventListener('click', function (e) {
-      if (!panel.contains(e.target) && !trigger.contains(e.target)) close();
-    });
-    panel.addEventListener('focusout', function (e) {
-      if (!panel.contains(e.relatedTarget) && e.relatedTarget !== trigger) close();
+      if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+        dismissed = true;
+        close();
+        trigger.focus();
+      }
     });
   }
 
@@ -86,7 +117,7 @@
       out.querySelector('[data-scan-band]').textContent = band;
       out.querySelector('[data-scan-headline]').textContent = headline;
       out.querySelector('[data-scan-body]').textContent = body;
-      out.querySelector('[data-scan-meter]').style.width = pct + '%';
+      out.querySelector('[data-scan-meter]').style.transform = 'scaleX(' + (pct / 100) + ')';
       out.setAttribute('tabindex', '-1');
       out.focus();
     });
@@ -97,15 +128,27 @@
   if (contact) {
     contact.addEventListener('submit', function (e) {
       e.preventDefault();
-      var note = contact.querySelector('[data-contact-note]');
       var data = new FormData(contact);
       var lines = [];
       data.forEach(function (v, k) { if (v) lines.push(k + ': ' + v); });
       var href = 'mailto:hello@sinaapartners.com'
         + '?subject=' + encodeURIComponent('Intro call — ' + (data.get('company') || 'enquiry'))
         + '&body=' + encodeURIComponent(lines.join('\n'));
-      note.hidden = false;
       window.location.href = href;
+    });
+  }
+
+  /* --- "Contact us" in the investors band (slide 46) ----------------------
+     The reviewer asked this button to jump to the form. It only scrolls and
+     focuses -- it never sends anything on its own. */
+  var jump = document.getElementById('contact-jump');
+  var jumpForm = document.getElementById('contact-form');
+  if (jump && jumpForm) {
+    jump.addEventListener('click', function (e) {
+      e.preventDefault();
+      jumpForm.scrollIntoView({ block: 'start' });
+      var first = jumpForm.querySelector('input, select, textarea');
+      if (first) first.focus({ preventScroll: true });
     });
   }
 })();
