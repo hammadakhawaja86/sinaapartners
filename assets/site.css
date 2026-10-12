@@ -607,7 +607,7 @@ legend { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 60
 @media (min-width: 620px) { .footer__grid { grid-template-columns: repeat(2, 1fr); } }
 /* Then the full row. The three link columns size to their own content
    (`auto` = max-content here) rather than taking an equal quarter each, so
-   "Technology and Services: Services" keeps one line and the short Company
+   "Technology & Services: Services" keeps one line and the short Company
    list stops hoarding width. The brand column absorbs what is left, which
    means a renamed link rebalances the row on its own. */
 @media (min-width: 1000px) {

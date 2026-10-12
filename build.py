@@ -66,9 +66,9 @@ LOCKUP_SVG = """<svg class="logo__lockup" viewBox="16 9.5 993 277" fill="none" r
 SOLUTIONS = [
     ("strategy.html", "01", "Strategy &amp; Consultancy",
      "Find out what is actually happening inside the business, then what to do."),
-    ("technology.html", "02", "Technology and Services: Tech",
+    ("technology.html", "02", "Technology &amp; Services: Tech",
      "Strategy through architecture, build and integration, into deployment."),
-    ("managed-operations.html", "02", "Technology and Services: Services",
+    ("managed-operations.html", "02", "Technology &amp; Services: Services",
      "We deliver the enabling functions, so you can focus on the things that matter."),
     ("capital.html", "03", "Capital",
      "Go-to-market to raise capital, grounded in fundamentals, not just a deck."),
@@ -201,8 +201,8 @@ FOOTER = """<footer class="site-footer on-dark">
         <h2 id="f-sol">Solutions</h2>
         <ul class="footer__nav">
           <li><a href="strategy.html">Strategy &amp; Consultancy</a></li>
-          <li><a href="technology.html">Technology and Services: Tech</a></li>
-          <li><a href="managed-operations.html">Technology and Services: Services</a></li>
+          <li><a href="technology.html">Technology &amp; Services: Tech</a></li>
+          <li><a href="managed-operations.html">Technology &amp; Services: Services</a></li>
           <li><a href="capital.html">Capital</a></li>
         </ul>
       </nav>
@@ -584,7 +584,7 @@ PAGES["index.html"] = dict(
       </a>
       <a class="card card--pillar" href="technology.html">
         <span class="card__num">PILLAR 02</span>
-        <h3>Technology and Services: Tech</h3>
+        <h3>Technology &amp; Services: Tech</h3>
         <ul class="ticks" style="gap:.6rem;font-size:var(--t-small);margin-top:.5rem">
           <li>Tech build, start to finish</li>
           <li>Clinical, compliance &amp; automation</li>
@@ -631,7 +631,7 @@ PAGES["index.html"] = dict(
           <div class="loop__arrow" aria-hidden="true">→</div>
           <div class="card card--dark">
             <span class="card__num">02</span>
-            <h3>Technology and Services</h3>
+            <h3>Technology &amp; Services</h3>
             <p>Build &amp; run</p>
           </div>
           <div class="loop__arrow" aria-hidden="true">→</div>
@@ -739,7 +739,7 @@ PAGES["solutions.html"] = dict(
       </a>
       <a class="card card--pillar" href="technology.html">
         <span class="card__num">PILLAR 02</span>
-        <h2>Technology and Services: Tech</h2>
+        <h2>Technology &amp; Services: Tech</h2>
         <p>End-to-end technology delivery, from product and platform strategy through to
           architecture, build, integration and continuous improvement.</p>
         <ul class="ticks" style="gap:.6rem;font-size:var(--t-small)">
@@ -752,7 +752,7 @@ PAGES["solutions.html"] = dict(
       </a>
       <a class="card card--pillar" href="managed-operations.html">
         <span class="card__num">PILLAR 02</span>
-        <h2>Technology and Services: Services</h2>
+        <h2>Technology &amp; Services: Services</h2>
         <p>Fully managed or co-sourced operations across the functions that keep a
           business, so the leadership team can focus on growth.</p>
         <ul class="ticks" style="gap:.6rem;font-size:var(--t-small)">
@@ -800,7 +800,7 @@ PAGES["solutions.html"] = dict(
           </tr>
           <tr>
             <th scope="row">The plan is clear but delivery capacity is the constraint</th>
-            <td>Technology and Services</td>
+            <td>Technology &amp; Services</td>
             <td>Fixed-scope build, then ongoing support</td>
           </tr>
           <tr>
@@ -909,13 +909,13 @@ PAGES["strategy.html"] = dict(
 # Pillar 02 — Technology build
 # ==========================================================================
 PAGES["technology.html"] = dict(
-    title="Technology and Services: Tech — Sinaa Partners",
+    title="Technology &amp; Services: Tech — Sinaa Partners",
     desc="End-to-end technology delivery: product and platform strategy, architecture, "
          "build, integration and deployment, with specialist clinical, compliance and "
          "automation practices.",
     main=page_hero(
         "Pillar 02",
-        "Technology and Services: Tech",
+        "Technology &amp; Services: Tech",
         "End-to-end technology delivery. Strategy through architecture, build and "
         "integration, into deployment and continuous improvement.") + """
 <section class="section">
@@ -978,7 +978,7 @@ PAGES["technology.html"] = dict(
           engagements continue into a &lsquo;run&rsquo; relationship, which leads to
           continuous improvement in the technology, and features managed services, to
           deliver the business processes.</p>
-        <p><a class="link-arrow" href="managed-operations.html">Pillar 02 &mdash; Technology and Services: Services</a></p>
+        <p><a class="link-arrow" href="managed-operations.html">Pillar 02 &mdash; Technology &amp; Services: Services</a></p>
       </div>
     </div>
   </div>
@@ -994,12 +994,12 @@ PAGES["technology.html"] = dict(
 # Pillar 02 — Managed operations
 # ==========================================================================
 PAGES["managed-operations.html"] = dict(
-    title="Technology and Services: Services — Sinaa Partners",
+    title="Technology &amp; Services: Services — Sinaa Partners",
     desc="Fully managed or co-sourced operations across finance, HR, marketing, sales "
          "and admin — run the back office so the leadership team can focus on growth.",
     main=page_hero(
         "Pillar 02",
-        "Technology and Services: Services",
+        "Technology &amp; Services: Services",
         "We deliver the enabling functions, so you can focus on the things that "
         "matter.") + """
 <section class="section">
@@ -1201,7 +1201,7 @@ PAGES["approach.html"] = dict(
       </div>
       <div class="loop__arrow" aria-hidden="true">→</div>
       <div class="card card--pillar">
-        <span class="card__num">02</span><h2>Technology and Services</h2>
+        <span class="card__num">02</span><h2>Technology &amp; Services</h2>
         <p>Build and run. Deliver the platform and operate the functions that turn a plan
           into performance.</p>
         <a class="link-arrow" href="technology.html">Pillar 02</a>
@@ -1610,7 +1610,7 @@ PAGES["insights.html"] = dict(
           and hold it to a service level.</p>
       <p>Getting this the wrong way around, i.e. outsourcing the control and keeping the
           admin, is a common and expensive mistake.</p>
-      <p><a class="link-arrow" href="managed-operations.html">Technology and Services: Services</a></p>
+      <p><a class="link-arrow" href="managed-operations.html">Technology &amp; Services: Services</a></p>
     </article>
 
     <article class="card--flat reveal" style="margin-bottom:3.5rem">
@@ -1622,7 +1622,7 @@ PAGES["insights.html"] = dict(
         be measured before and after.</p>
       <p>In other scenarios it is just a pilot, and pilots should be sandboxed and costed
           as such.</p>
-      <p><a class="link-arrow" href="technology.html">Technology and Services: Tech</a></p>
+      <p><a class="link-arrow" href="technology.html">Technology &amp; Services: Tech</a></p>
     </article>
 
     <article class="card--flat reveal" style="margin-bottom:3.5rem">
@@ -1720,8 +1720,8 @@ PAGES["contact.html"] = dict(
           <label for="interest">What is this about?</label>
           <select id="interest" name="interest">
             <option>Strategy &amp; Consultancy</option>
-            <option>Technology and Services: Tech</option>
-            <option>Technology and Services: Services</option>
+            <option>Technology &amp; Services: Tech</option>
+            <option>Technology &amp; Services: Services</option>
             <option>Capital</option>
             <option>Other / not sure yet</option>
           </select>
